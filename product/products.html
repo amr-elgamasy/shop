@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منتجات العيادة البيطرية - عرض صفوف</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="products-header">
+        <div class="container">
+            <h1><i class="fas fa-paw"></i> صيدلية العيادة البيطرية</h1>
+            <p>أفضل المنتجات الطبية لصحة حيوانك الأليف</p>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="filter-sidebar">
+            <div class="mobile-filter-header">
+               
+                <button class="close-filter"><i class="fas fa-times"></i></button>
+           
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-group">
+                    <h4><i class="fas fa-tags"></i> الفئة</h4>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span>جميع الفئات</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>الأدوية</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>الطعام الطبي</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>الفيتامينات</span>
+                        </label>
+                        
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h4><i class="fas fa-paw"></i> نوع الحيوان</h4>
+
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span>الكل</span>
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>القطط</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>الوحش</span>
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>الطيور</span>
+                        </label>
+
+                         <label class="filter-option">
+                            <input type="checkbox">
+                            <span>الأرانب</span>
+                        </label>
+
+                         <label class="filter-option">
+                            <input type="checkbox">
+                            <span>المواشي</span>
+                        </label>
+
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>الأسماك</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <h4><i class="fas fa-money-bill-wave"></i> السعر</h4>
+                    <div class="price-range">
+                        <input type="range" min="0" max="500" value="500" class="price-slider">
+                        <div class="price-labels">
+                            <span>0 ج.م</span>
+                            <span>250 ج.م</span>
+                            <span>500 ج.م</span>
+                        </div>
+                    </div>
+                </div>
+
+              <div class="filter-actions">
+    <button class="reset-btn">إعادة تعيين الكل</button>
+</div>
+            </div>
+        </aside>
+
+        <div class="products-main">
+    <div class="products-header">
+        <button class="mobile-filter-btn"><i class="fas fa-filter"></i> الفلاتر</button>
+    </div>
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="ابحث عن منتج بالاسم...">
+</div>
+    <div id="loadingSpinner" class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>جاري تحميل المنتجات...</p>
+    </div>
+    <div class="products-list" id="productsContainer">
+        <!-- سيتم إضافة المنتجات ديناميكياً -->
+    </div>
+
+    <div class="pagination">
+        <button class="page-btn" id="prevPage"><i class="fas fa-chevron-right"></i> السابق</button>
+        <div class="page-numbers" id="pageNumbers"></div>
+        <button class="page-btn" id="nextPage">التالي <i class="fas fa-chevron-left"></i></button>
+    </div>
+</div>
+ <!-- Shopping Cart -->
+    <div class="cart-overlay"></div>
+    <div id="cart-sidebar">
+        <div class="cart-header">
+           
+            <button id="close-cart">&times;</button>
+         <h3>سلة التسوق</h3>
+        </div>
+        <div class="cart-items">
+            <!-- تظهر العناصر هنا -->
+        </div>
+        <div class="cart-total">
+            <p>الإجمالي: <span>0</span> </p>
+        </div>
+<button id="checkoutBtn">إتمام الشراء</button>
+    </div>
+    <button id="cart-button">🛒 <span class="cart-count">0</span></button>
+
+    <script src="products.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1515 @@
+
+:root {
+    /* Colors */
+    --primary-color: #32AD96;
+    --primary-dark: #2c8a7d;
+    --primary-light: #4caf91;
+    --danger-color: #f71a1ad2;
+    --text-color: #333;
+    --text-light: #666;
+    --bg-color: #f8f9fa;
+    --white: #ffffff;
+    
+    /* Spacing */
+    --spacing-xs: 0.4rem;
+    --spacing-sm: 0.7rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Border Radius */
+    --border-radius-sm: 5px;
+    --border-radius-md: 10px;
+    --border-radius-lg: 15px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+}
+
+/* تنسيق عام للموقع */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+}
+  
+
+html {
+    scroll-behavior: smooth; /* إضافة تأثير التمرير السلس */
+}
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px; /* تحديد أقصى عرض للعنصر */
+    margin: 0 auto; /* توسيط العنصر */
+    padding: 0 15px; /* إضافة حواف داخلية */
+}
+
+/* تنسيق رأس الصفحة */
+.products-header {
+    background: linear-gradient(135deg, #8a2c2c, #34bca1); /* خلفية بتدرج لوني */
+    color: white; /* تحديد لون النص */
+    padding: 1.5rem 0; /* إضافة حشو علوي وسفلي */
+    text-align: center; /* توسيط النص */
+    margin-bottom: 2rem; /* إضافة هامش سفلي */
+    display: flex; /* جعل العنصر يستخدم Flexbox */
+    padding: 0; /* إزالة الحشو الزائد */
+}
+
+
+     
+.main-container {
+    display: flex; /* استخدام Flexbox */
+    gap: 2rem; /* المسافة بين العناصر */
+    padding: 0 1rem; /* إضافة حواف داخلية */
+}
+
+.filter-sidebar {
+    flex: 0 0 280px; /* تحديد عرض الشريط الجانبي */
+    background: var(--primary-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: var(--spacing-lg);
+    height: fit-content;
+}
+
+.mobile-filter-header {
+    display: none; /* إخفاء الهيدر في النسخة المحمولة */
+    margin-bottom: 10px; /* إضافة هامش سفلي */
+}
+
+.filter-group {
+    margin-bottom: 1.8rem; /* إضافة هامش سفلي */
+}
+
+.filter-group h4 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.filter-option input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* تصميم المربع بجانب النص */
+.filter-option span::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #fff;
+    border-radius: 40px;
+    margin-left: 10px;
+    background-color: transparent; /* لون الخلفية */
+    vertical-align: middle; /* محاذاة عمودية */
+    transition: all 0.2s ease;
+}
+
+/* علامة الصح عند التحديد */
+.filter-option input[type="checkbox"]:checked + span::before {
+    background-color: #ffffff; /* لون الخلفية */
+    border-color: #ffffff; /* لون الحدود */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='%2332AD96' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.00039 10.8002L3.20039 8.00024L2.26606 8.93457L6.00039 12.6689L14.0004 4.66891L13.0661 3.73457L6.00039 10.8002Z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; /* عدم تكرار الصورة */
+    background-position: center; /* توسيط الصورة */
+    background-size: 12px; /* حجم الصورة */
+}
+
+/* تأثير hover */
+.filter-option:hover {
+    color: #ffffff; /* تغيير لون النص عند التمرير */
+}
+
+/* مؤشر الفأرة */
+.filter-option input {
+    cursor: pointer; /* تغيير شكل المؤشر عند المرور */
+}
+
+/*تنسيق شريط التمرير */
+.price-range {
+    margin-top: 1.59rem; /* إضافة هامش علوي */
+}
+
+.price-slider {
+    width: 100%; /* تحديد العرض */
+    height: 6px; /* تحديد الارتفاع */
+    -webkit-appearance: none; /* إزالة التنسيق الافتراضي في متصفح Safari */
+    -moz-appearance: none; /* إزالة التنسيق الافتراضي في متصفح Firefox */
+    appearance: none; /* إزالة التنسيق الافتراضي في المتصفحات الأخرى */
+    background: #ebe5e5; /* تحديد لون الخلفية */
+    border-radius: 5px; /* إضافة زاوية دائرية */
+    margin: 1rem 0; /* إضافة حواف علوية وسفلية */
+}
+
+.price-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* إزالة التنسيق الافتراضي في Safari */
+    width: 18px; /* تحديد العرض */
+    height: 18px; /* تحديد الارتفاع */
+    background: #2c8a7d; /* تحديد لون الخلفية */
+    border-radius: 50%; /* جعل العنصر دائري */
+    cursor: pointer; /* تغيير شكل المؤشر إلى يد */
+}
+
+.price-labels {
+    display: flex; /* جعل العنصر يستخدم Flexbox */
+    justify-content: space-between; /* توزيع المسافات بالتساوي بين العناصر */
+    color: #ffffff; /* تحديد لون النص */
+    font-size: 1rem; /* تحديد حجم الخط */
+}
+
+.filter-actions {
+    margin-top: 1.5rem; /* إضافة هامش علوي */
+}
+
+.reset-btn {
+    width: 100%; /* تحديد العرض ليكون 100% */
+    padding: 0.7rem; /* إضافة حواف داخلية */
+    background: #f71a1ad2; /* تحديد لون الخلفية */
+    color: #ffffff; /* تحديد لون النص */
+    border: none; /* إزالة الحدود */
+    border-radius: 5px; /* إضافة زاوية دائرية */
+    font-weight: bold; /* جعل النص عريض */
+    cursor: pointer; /* تغيير شكل المؤشر إلى يد */
+}
+
+.reset-btn:hover {
+    background: #f71a1ad2; /* تغيير لون الخلفية عند التمرير فوق العنصر */
+color: #ffffff; /* تغيير لون النص */
+    transform: scale(1.05); /* تكبير العنصر قليلاً عند التمرير */
+        transition: all 0.5s; /* إضافة تأثير عند التمرير */
+}
+
+.apply-btn {
+    background: #2c8a7d; /* تحديد لون الخلفية */
+    color: white; /* تحديد لون النص */
+}
+
+.apply-btn:hover {
+    background: #32AD96; /* تغيير لون الخلفية عند التمرير فوق العنصر */
+}
+
+
+/* تنسيق الشريط الجانبي للفلتر */
+.products-main {
+    flex: 1; /* جعل المساحة المتبقية تأخذ 100% */
+}
+
+/* تنسيق خيارات الفرز */
+.sort-options {
+    display: flex; /* ترتيب العناصر أفقيًا */
+    align-items: center; /* محاذاة العناصر عموديًا في المنتصف */
+    gap: 0.7rem; /* مسافة بين العناصر */
+}
+
+/* تنسيق القائمة المنسدلة للفرز */
+.sort-select {
+    padding: 0.5rem; /* الحشو حول النص */
+    border-radius: 5px; /* تدوير الزوايا */
+    border: 1px solid #ddd; /* حدود خفيفة */
+    background: white; /* خلفية بيضاء */
+    cursor: pointer; /* تغيير المؤشر عند المرور */
+}
+
+.mobile-filter-btn {
+    display: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+    font-weight: 500;
+    transition: var(--transition-normal);
+}
+
+.mobile-filter-btn:hover {
+    background: var(--primary-dark);
+}
+
+.mobile-filter-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(50, 173, 150, 0.3);
+}
+
+/* تنسيق أيقونة زر الفلتر */
+.mobile-filter-btn i {
+    font-size: 1rem; /* حجم الأيقونة */
+}
+
+
+
+/* تنسيق قائمة المنتجات (التخطيط باستخدام الصفوف) */
+.products-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin: var(--spacing-xl) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.no-results i {
+    display: block;
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    opacity: 0.8;
+}
+
+.no-results p {
+    color: var(--text-light);
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+/* تنسيق صف المنتج */
+.product-row {
+    width: 100%;
+    height: 100%;
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* تأثير التمرير على صف المنتج */
+.product-row:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+}
+
+/* تنسيق صورة المنتج */
+.product-image {
+    width: 100%;
+    aspect-ratio: 1/1; /* مربع دائمًا */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px 15px 0 0;
+    background: #fff;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* عرض الصورة بالكامل بدون قص */
+    background: #fdfdfd; /* املأ الفراغات حول الصورة باللون الأبيض */
+  object-fit: cover; /* تقص الصورة علشان تملأ المربع بدون تشويه */
+    transition: transform 0.3s;
+    display: block;
+}
+
+/* تنسيق تفاصيل المنتج */
+.product-details {
+    padding: 1rem;
+    flex-grow: 0;
+}
+
+/* تنسيق عنوان المنتج */
+.product-title {
+    font-weight: bold;
+    color: #32AD96;
+    margin-bottom: 0.7rem;
+    font-size: 1.4rem;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1; /* عدد السطور */
+    line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: auto; /* خليها auto علشان الارتفاع يبقى حسب عدد السطور */
+    max-height: 3.2em; /* تقريبًا ارتفاع سطرين */
+    white-space: normal;
+}
+
+/* تنسيق وصف المنتج */
+.product-description {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* تنسيق معلومات المنتج (التصنيف والأنواع) */
+.product-meta {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+/* تنسيق نوع الحيوان وفئة المنتج */
+.animal-type, .product-category {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1rem;
+    color: #32AD96;
+}
+
+/* تنسيق تسعير المنتج */
+.product-pricing {
+    padding: 1rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-right: none;
+}
+
+/* تنسيق حاوية السعر */
+.price-container {
+    text-align: right;
+}
+
+/* تنسيق السعر الحالي */
+.current-price {
+    font-weight: bold;
+    color: #32AD96;
+    font-size: 1.3rem;
+}
+
+/* تنسيق السعر القديم (المخطط عليه) */
+.old-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 1rem;
+    display: block;
+}
+
+/* تنسيق زر إضافة إلى السلة */
+.add-to-cart {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-weight: bold;
+    transition: var(--transition-normal);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+/* Out of stock styles */
+.product-row.out-of-stock {
+    opacity: 0.85;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    filter: grayscale(20%);
+}
+
+.product-row.out-of-stock {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.product-row.out-of-stock::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(248, 249, 250, 0.4);
+    pointer-events: none;
+    border-radius: var(--border-radius-lg);
+    z-index: 1;
+}
+
+.product-row.out-of-stock .product-image {
+    position: relative;
+}
+
+.product-row.out-of-stock:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.product-row.out-of-stock .product-image::after {
+    content: "Out of Stock";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    background: var(--danger-color);
+    color: white;
+    padding: 0.5rem 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.product-row.out-of-stock .add-to-cart {
+    background: var(--text-light);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.product-row.out-of-stock .add-to-cart:hover {
+    background: var(--text-light);
+    transform: none;
+}
+
+.add-to-cart:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.add-to-cart:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(50, 173, 150, 0.3);
+}
+
+.add-to-cart:active {
+    transform: translateY(0);
+}
+
+/* تنسيق التصفح عبر الصفحات */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin: var(--spacing-xl) 0 var(--spacing-xl);
+    padding: var(--spacing-md);
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.page-numbers {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin: 0 var(--spacing-md);
+}
+
+.page-numbers .page-btn {
+    min-width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 0.95rem;
+    border-radius: 50%;
+}
+
+#prevPage, #nextPage {
+    min-width: 100px;
+    height: 40px;
+    padding: 0 var(--spacing-md);
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    font-weight: 600;
+    border-radius: var(--border-radius-sm);
+}
+
+.page-btn:hover {
+    background: var(--bg-color);
+    color: var(--primary-color);
+}
+
+.page-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.page-btn.active {
+    background: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+}
+
+#prevPage:hover, #nextPage:hover {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+#prevPage:disabled, #nextPage:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--bg-color);
+    color: var(--text-light);
+    border-color: var(--bg-color);
+}
+
+#prevPage i, #nextPage i {
+    font-size: 0.8rem;
+}
+
+.search-container {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    padding: var(--spacing-md);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+}
+
+#searchInput {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid transparent;
+    background-color: #ffffff;
+    border-radius: 50px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: var(--transition-fast);
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: var(--white);
+    box-shadow: 0 0 0 3px rgba(50, 173, 150, 0.1);
+}
+
+#searchInput::placeholder {
+    color: var(--text-light);
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: var(--spacing-xl);
+    display: none;
+}
+
+.loading-spinner i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    animation: spin 1s linear infinite;
+}
+
+.loading-spinner p {
+    margin-top: var(--spacing-sm);
+    color: var(--text-light);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* وسائط الاستجابة (Responsive) للموقع */
+@media (max-width: 992px) {
+    .products-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-sm);
+    }
+}
+
+@media (max-width: 576px) {
+    .products-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-container {
+        flex-direction: column; /* تغيير الترتيب إلى عمودي */
+    }
+    
+    .filter-sidebar {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        z-index: 1000;
+        transition: right var(--transition-normal);
+        padding: var(--spacing-lg);
+        overflow-y: auto;
+        margin: 0;
+    }
+    
+
+    .filter-sidebar.active {
+        right: 0; /* عرض الشريط الجانبي عند تفعيله */
+    }
+    
+    .mobile-filter-header {
+        display: flex; /* ترتيب العناصر باستخدام Flexbox */
+        justify-content: space-between; /* توزيع العناصر بين الجوانب */
+        align-items: center; /* محاذاة العناصر عموديًا */
+        padding: 1.5rem; /* حشو داخلي */
+        color: white; /* اللون النصي */
+        width: 100%; /* عرض كامل */
+        z-index: 1001; /* تعيين الأولوية أعلى من غيره */
+    }
+    
+    .close-filter {
+        background: none; /* بدون خلفية */
+        color: rgb(255, 255, 255); /* النص أبيض */
+        font-size: 1.9rem; /* حجم الخط */
+    }
+    
+    .mobile-filter-btn {
+        display: flex; /* عرض زر الفلتر في النسخة المحمولة */
+    }
+    
+    .products-list {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* تعديل الأعمدة في النسخة المحمولة */
+    }
+
+    #searchInput {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #4caf91;
+        background-color: #e7e7e7; /* لون الخلفية */
+        border-radius: 50px;
+        font-size: 16px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+
+    .item-id {
+        display: block;
+        font-size: 0.85rem;
+        color: #888;
+        margin-top: 5px;
+    }
+
+#searchInput:focus {
+    outline: none;
+    border-color: #4caf91;
+}
+
+
+    .product-row {
+        flex-direction: column; /* ترتيب العناصر عموديًا */
+        max-width: 100%; /* عرض كامل */
+        margin: 0 auto; /* توسيط العنصر */
+    }
+    
+    .product-image {
+        max-width: 100%; /* عرض الصورة كامل */
+        
+    }
+    
+    .product-pricing {
+        border-right: none; /* إزالة الحد الأيمن */
+        border-top: 1px solid #eee; /* إضافة حد علوي */
+        align-items: flex-start; /* محاذاة العناصر من الأعلى */
+    }
+}
+
+/* تنسيق المكونات الأخرى للصفحات المتجاوبة */
+@media (max-width: 768px) {
+    .products-list {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* تعديل الأعمدة في النسخة المحمولة */
+    }
+    
+    .products-header {
+        flex-direction: column; /* ترتيب العناصر عموديًا */
+        align-items: flex-start; /* محاذاة العناصر إلى اليسار */
+        gap: 1rem; /* المسافة بين العناصر */
+    }
+    
+    .sort-options {
+        width: 100%; /* عرض كامل لخيارات الفلتر */
+    }
+    
+    .sort-select {
+        flex: 1; /* جعل القائمة المنسدلة تأخذ كامل المساحة المتاحة */
+    }
+    
+    .mobile-filter-btn {
+        width: 100%; /* جعل زر الفلتر يعرض كامل العرض */
+        justify-content: center; /* محاذاة المحتويات في المنتصف */
+    }
+}
+
+/* تنسيق النسخة المحمولة */
+@media (max-width: 576px) {
+    .products-list {
+        grid-template-columns: 1fr; /* عرض عمود واحد في النسخة المحمولة */
+    }
+    
+    .product-meta {
+        flex-direction: column; /* ترتيب المعلومات عموديًا */
+        gap: 0.7rem; /* المسافة بين العناصر */
+    }
+    
+    .pagination {
+        flex-wrap: wrap; /* السماح بلف العناصر */
+    }
+}
+
+/* تنسيق الشريط الجانبي للفلتر في النسخة المحمولة */
+@media (max-width: 768px) {
+
+  /* الشريط الجانبي للفلتر */
+  .filter-sidebar {
+    position: fixed; /* جعل الشريط الجانبي مثبتًا */
+    top: 0; /* تحديد المسافة من الأعلى */
+    right: 0; /* تحديد المسافة من اليمين */
+    width: auto; /* تحديد عرض الشريط الجانبي */
+    height: 80vh; /* تحديد الارتفاع ليغطي كامل الشاشة */
+    background-color: #32ad9633; /* الخلفية بيضاء */
+    backdrop-filter: blur(10px); /* إضافة تأثير ضبابي للخلفية */
+    z-index: 9999; /* تعيين أولوية ظهور الشريط الجانبي */
+    transform: translateX(100%); /* إخفاء الشريط الجانبي خارج الشاشة */
+    transition: transform 0.8s ease; /* إضافة تأثير حركة سلسة عند التبديل */
+    overflow-y: auto; /* السماح بالتمرير العمودي */
+    margin-top: 3rem;
+  }
+
+  /* تنسيق زر فتح الفلتر */
+  .filter-sidebar.active {
+    transform: translateX(0); /* إظهار الشريط الجانبي */
+    transition: transform 0.8s ease; /* إضافة تأثير حركة سلسة عند التبديل */
+    margin-right: 1rem; /* إضافة مسافة من اليمين */
+
+}
+
+  /* تنسيق زر إغلاق الفلتر */
+  .close-filter {
+    position: absolute; /* تموضع الزر بشكل مطلق داخل الشريط الجانبي */
+    top: 8px; /* من الأعلى */
+    left: 25px; /* من اليسار */
+    background: none; /* إزالة الخلفية */
+    border: none; /* إزالة الحدود */
+    font-size: 1.5rem; /* تحديد حجم الخط */
+  }
+
+  /* تنسيق الحاوية الرئيسية */
+  .main-container {
+    position: relative; /* تموضع الحاوية بشكل نسبي */
+    
+  }
+}
+
+/* تنسيق سلة التسوق */
+#cart-sidebar {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -100%;
+    width: 90%;
+    max-width: 400px;
+    height: 80vh;
+    background: var(--white);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transition: var(--transition-normal);
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--border-radius-lg);
+}
+
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-normal);
+    z-index: 999;
+}
+
+.cart-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* حالة فتح السلة */
+#cart-sidebar.open {
+    left: 0;
+}
+
+#cart-sidebar.open::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* تنسيق رأس السلة */
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg);
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+.cart-header h3 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+/* تنسيق زر إغلاق السلة */
+#close-cart {
+    background: none;
+    border: none;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--white);
+    cursor: pointer;
+    border-radius: var(--border-radius-sm);
+    transition: var(--transition-fast);
+}
+
+#close-cart:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* تنسيق عناصر السلة */
+.cart-items {
+    flex: 1;
+    padding: var(--spacing-md);
+    overflow-y: auto;
+}
+
+.cart-item {
+    background: var(--bg-color);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    transition: var(--transition-fast);
+}
+
+.cart-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xs);
+}
+
+.cart-item-header .item-name {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+.cart-item-header .item-total {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.cart-item .item-id {
+    display: block;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.cart-item:hover {
+    background: var(--white);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cart-total {
+    padding: var(--spacing-lg);
+    background: var(--white);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.cart-total p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.cart-total span {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.4rem;
+}
+
+#checkoutBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    margin-right: 1rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+/* تأثير التمرير على زر الدفع */
+#checkoutBtn:hover {
+    background: var(--primary-dark);
+}
+
+#checkoutBtn:active {
+    transform: translateY(0);
+}
+
+#cart-sidebar.open::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* تنسيق زر سلة التسوق العائم */
+#cart-button {
+    position: fixed; /* جعل الزر مثبتًا */
+    bottom: 30px; /* من الأسفل */
+    left: 30px; /* من اليسار */
+background-color: #32AD96;
+    color: white; /* النص باللون الأبيض */
+    border: none; /* إزالة الحدود */
+    width: 70px; /* عرض الزر */
+    height: 70px; /* ارتفاع الزر */
+    border-radius: 50%; /* جعل الزر دائريًا */
+    font-size: 1.5rem; /* حجم الخط */
+    cursor: pointer; /* تغيير المؤشر عند المرور */
+    box-shadow: 0 2px 10px #00000033; /* إضافة ظل خفيف */
+    z-index: 1001; /* تعيين أولوية الزر */
+    display: flex; /* استخدام Flexbox داخل الزر */
+    align-items: center; /* محاذاة الأيقونة عموديًا */
+    justify-content: center; /* محاذاة الأيقونة أفقيًا */
+}
+
+/* تأثير التمرير على زر سلة التسوق العائم */
+#cart-button:hover {
+    transform: scale(1.15); /* تكبير الزر قليلاً عند التمرير */
+    transition: all 0.5s; /* إضافة تأثير عند التمرير */
+    color: #32ad96; /* تغيير لون الأيقونة */
+    background-color: #34bca1ab; /* تغيير الخلفية عند التمرير */
+    box-shadow: 0 4px 20px #00000033; /* إضافة ظل خفيف */
+    transition: all 0.5s ease; /* إضافة تأثير عند التمرير */
+
+}
+
+/* تأثيرات لأزرار الإضافة */
+.add-to-cart.active {
+    transform: scale(0);
+    background-color: #c43131;
+    color: white;
+}
+
+/* إشعارات السلة */
+.cart-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #32ad9641;
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(50, 173, 150, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.cart-notification.show {
+    opacity: 1;
+    bottom: 30px;
+    transform: translateX(-50%) scale(1);
+}
+
+.cart-notification:before {
+    content: "🛒";
+    margin-left: 10px;
+}
+
+/* تأثيرات الانتقال */
+.add-to-cart {
+    transition: all 0.3s ease;
+}
+
+
+
+/* تنسيق عداد العناصر في السلة */
+.cart-count {
+    position: absolute; /* تموضع العدّاد بشكل مطلق داخل الزر */
+    top: -5px; /* من الأعلى */
+    right: -5px; /* من اليمين */
+    background:#ff0000; /* خلفية العدّاد بلون مميز */
+    color: #ffffff; /* النص باللون الأبيض */
+    border-radius: 50%; /* جعل العدّاد دائريًا */
+    width: 25px; /* عرض العدّاد */
+    height: 25px; /* ارتفاع العدّاد */
+    font-size: 1rem; /* حجم الخط */
+    align-items: center; /* محاذاة النص عموديًا */
+    justify-content: center; /* محاذاة النص أفقيًا */
+    display: flex; /* استخدام Flexbox داخل العدّاد */
+    font-weight: bold; /* جعل النص بالخط العريض */
+    padding: 0.5rem; /* إضافة حشو داخلي */
+    display: none; /* إخفاء العدّاد بشكل افتراضي */
+     opacity: 0;
+    transition: opacity 0.3s ease;
+}
+    
+    
+.cart-count.visible {
+    display: flex; /* إظهار العداد عندما يصبح مرئيًا */
+    opacity: 1;
+}
+
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.bounce {
+    animation: bounce 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+
+
+
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.quantity-controls button {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-color);
+    color: var(--primary-color);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.quantity-controls button:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-1px);
+}
+
+.quantity-controls button:active {
+    transform: translateY(0);
+}
+
+.item-quantity {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    min-width: 24px;
+    text-align: center;
+}
+
+.remove-item {
+    margin-left: auto;
+    background-color: var(--danger-color) !important;
+    color: var(--white) !important;
+    border: none !important;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--border-radius-sm) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem !important;
+    transition: var(--transition-fast) !important;
+}
+
+.remove-item:hover {
+    background-color: #d32f2f !important;
+    transform: scale(1.05) !important;
+}
+
+.item-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.cart-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xs);
+}
+/* تنسيق معرف المنتج */
+.item-id {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: var(--spacing-xs);
+}
+/* تنسيق سعر المنتج */
+.item-total {
+    
+    font-size: 19px;
+    color: #32AD96;
+    font-weight: bold;
+    text-align: right;
+}
+/* تنسيق المجموع الإجمالي */
+.cart-total {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ee411a;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    text-align: center;
+}
+
+
+.remove-item {
+  background-color: #a79998!important; /* أحمر */
+  border: none;
+  color: white!important;
+  padding: 12px 10px!important;
+  border-radius: 10px!important;
+  cursor: pointer!important;
+  font-size: 16px!important;
+  transition: background-color 0.2s!important;
+}
+
+.remove-item:hover {
+  background-color: #d32f2f!important;
+  box-shadow:  5px 0  10px 0 rgba(201, 30, 30, 0.2)!important;
+      transform: scale(1.2)!important; /* تكبير الزر قليلاً عند التمرير */
+    transition: all 0.3s ease!important;
+
+}
+
+.cart-item {
+    background: var(--bg-color);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+}
+
+.cart-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xs);
+}
+
+.item-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.item-total {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.item-id {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.cart-item .item-name {
+  flex: 2;
+  font-weight: 500;
+}
+
+.cart-item .item-price {
+  flex: 1;
+  text-align: right;
+  color: #32AD96;
+  font-weight: bold;
+}
+
+.cart-item .item-quantity {
+  flex: 1;
+  text-align: center;
+}
+
+.cart-item .item-controls {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+   .products-list {
+       grid-template-columns: repeat(2, 1fr);
+       gap: var(--spacing-md);
+       max-width: 900px;
+   }
+
+   .filter-sidebar {
+       flex: 0 0 250px;
+   }
+}
+
+@media (max-width: 992px) {
+   .main-container {
+       gap: var(--spacing-md);
+       padding: var(--spacing-sm);
+   }
+
+   .filter-sidebar {
+       position: fixed;
+       top: 0;
+       right: -100%;
+       width: 300px;
+       height: 100vh;
+       z-index: 1001;
+       border-radius: 0;
+       margin: 0;
+   }
+
+   .filter-sidebar.active {
+       right: 0;
+   }
+
+   .mobile-filter-btn {
+       display: flex;
+       margin-bottom: var(--spacing-md);
+   }
+
+   #cart-sidebar {
+       width: 100%;
+       max-width: none;
+   }
+
+   .cart-item {
+       flex-direction: column;
+       align-items: flex-start;
+   }
+
+   .quantity-controls {
+       width: 100%;
+       justify-content: flex-start;
+       margin-top: var(--spacing-md);
+   }
+
+   .product-title {
+       font-size: 1.2rem;
+   }
+}
+
+@media (max-width: 768px) {
+   .products-header h1 {
+       font-size: 1.4rem;
+   }
+
+   .product-row {
+       margin-bottom: var(--spacing-md);
+   }
+
+   .cart-header h3 {
+       font-size: 1.1rem;
+   }
+
+   #cart-button {
+       width: 50px;
+       height: 50px;
+       bottom: var(--spacing-md);
+       right: var(--spacing-md);
+       font-size: 1.2rem;
+   }
+
+   .cart-count {
+       width: 20px;
+       height: 20px;
+       font-size: 0.8rem;
+   }
+
+   #checkoutBtn {
+       font-size: 1rem;
+       padding: var(--spacing-sm);
+   }
+}
+
+@media (max-width: 576px) {
+   .products-list {
+       grid-template-columns: 1fr;
+       gap: var(--spacing-sm);
+   }
+
+   .filter-sidebar {
+       width: 100%;
+   }
+
+   .products-header h1 {
+       font-size: 1.2rem;
+   }
+
+   .products-header p {
+       font-size: 0.9rem;
+   }
+
+   .item-info {
+       width: 100%;
+   }
+
+   .item-total {
+       margin-top: var(--spacing-xs);
+   }
+
+   .quantity-controls button {
+       width: 28px;
+       height: 28px;
+       font-size: 1rem;
+   }
+
+   .search-container {
+       padding: var(--spacing-sm);
+   }
+
+   #searchInput {
+       padding: var(--spacing-sm);
+       font-size: 0.9rem;
+   }
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.page-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.page-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.page-btn.active {
+    background-color: #2E7D32;
+    font-weight: bold;
+}
+
+/* تنسيق حالة التحميل */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #32AD96;
+    display: none;
+}
+
+.loading-spinner i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.loading-spinner p {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.loading-spinner.active {
+    display: flex;
+}
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>جارٍ تحويلك...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f0f0f0;
+    }
+    .message {
+      font-size: 24px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="message">
+    ⏳ برجاء الانتظار، سيتم تحويلك خلال ثوانٍ...
+  </div>
+
+  <script>
+    setTimeout(function () {
+      window.location.href = '../thank/thankyou.html';
+    }, 5000); // 5000 ميلي ثانية = 5 ثواني
+  </script>
+
+</body>
+</html>

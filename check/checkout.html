@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إتمام الشراء</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="check.css">
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>إتمام الشراء</h1>
+      <h2>ملخص المنتجات في السلة</h2>
+    </header>
+
+    <section id="product-summary" aria-label="ملخص المنتجات"></section>
+
+    <form id="checkout-form" novalidate autocomplete="off">
+      <div class="form-group">
+        <label for="name">الاسم الكامل</label>
+        <input type="text" id="name" name="name" required autocomplete="off"
+               maxlength="50" aria-required="true" placeholder="أدخل اسمك الكريم"
+               oninput="this.value = this.value.replace(/[0-9]/g, '')">
+        <i class="fas fa-user"></i>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">رقم الهاتف</label>
+        <input type="tel" id="phone" name="phone" required autocomplete="off"
+               pattern="01[0-9]{9}" aria-required="true" maxlength="11"
+               oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+               placeholder="مثال: 01012345678"
+               title="أدخل رقم هاتف صحيح (مثال: 01012345678)">
+        <i class="fas fa-phone"></i>
+      </div>
+
+      <div class="form-group">
+        <label for="address">العنوان الكامل</label>
+        <input type="text" id="address" name="address" required autocomplete="off"
+               maxlength="50" aria-required="true" placeholder="أدخل العنوان الكامل">
+        <i class="fas fa-map-marker-alt"></i>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">ملاحظات إضافية</label>
+        <textarea id="notes" name="notes" rows="3" autocomplete="off"
+                  maxlength="50" placeholder="اكتب أي ملاحظات إضافية (اختياري)"></textarea>
+        <i class="fas fa-comment-alt"></i>
+      </div>
+
+      <div class="payment-method-container">
+        <button type="button" class="payment-toggle" id="paymentToggle" 
+                aria-expanded="false" aria-controls="paymentOptions">
+          <span>اختر طريقة الدفع</span>
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </button>
+
+        <div class="payment-options" id="paymentOptions" role="listbox" 
+             aria-label="طرق الدفع المتاحة">
+          <div class="payment-option selected" role="option" aria-selected="true"
+               data-method="wallet" tabindex="0"
+               onclick="selectPaymentMethod(this, 'wallet')"
+               onkeypress="(event.key === 'Enter' || event.key === ' ') && selectPaymentMethod(this, 'wallet')">
+            <div class="payment-icon">
+              <i class="fas fa-wallet" aria-hidden="true"></i>
+            </div>
+            <div class="payment-details">
+              <div class="payment-title">المحافظ الإلكترونية</div>
+              <div class="payment-description">STC Pay - فودافون كاش - أورانج كاش</div>
+            </div>
+          </div>
+
+          <div class="payment-option card" role="option" aria-selected="false"
+               data-method="visa" tabindex="0"
+               onclick="selectPaymentMethod(this, 'visa')"
+               onkeypress="(event.key === 'Enter' || event.key === ' ') && selectPaymentMethod(this, 'visa')">
+            <div class="payment-icon">
+              <i class="fab fa-cc-visa" aria-hidden="true"></i>
+            </div>
+            <div class="payment-details">
+              <div class="payment-title">بطاقة فيزا / ماستركارد</div>
+              <div class="payment-description">الدفع الآمن عبر البطاقات الإئتمانية</div>
+            </div>
+          </div>
+
+          <div class="payment-option cash" role="option" aria-selected="false"
+               data-method="cash" tabindex="0"
+               onclick="selectPaymentMethod(this, 'cash')"
+               onkeypress="(event.key === 'Enter' || event.key === ' ') && selectPaymentMethod(this, 'cash')">
+            <div class="payment-icon">
+              <i class="fas fa-money-bill-wave" aria-hidden="true"></i>
+            </div>
+            <div class="payment-details">
+              <div class="payment-title">الدفع عند الاستلام</div>
+              <div class="payment-description">الدفع نقداً عند توصيل الطلب</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="selected-payment-display" id="selectedPaymentDisplay">
+          <div class="selected-payment-text">
+            <span id="selectedMethodText">المحافظ الإلكترونية</span>
+          </div>
+          <button type="button" class="change-payment" onclick="togglePaymentOptions()">
+            تغيير
+          </button>
+        </div>
+
+        <input type="hidden" name="payment_method" id="paymentMethodInput" value="wallet">
+      </div>
+
+      <div id="loading-message" class="loading" role="status" aria-live="polite">
+        <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+        جاري إتمام عملية الشراء، من فضلك انتظر...
+      </div>
+
+      <div id="error-message" class="error-message" role="alert" aria-live="assertive">
+        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+        <span id="error-text"></span>
+      </div>
+
+      <button type="submit" id="submit-btn">
+        <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+        <span>إتمام الشراء</span>
+      </button>
+    </form>
+  </main>
+
+  <script>
+    // إضافة مستمعي أحداث للحقول
+    const formFields = {
+      name: document.getElementById('name'),
+      phone: document.getElementById('phone'),
+      address: document.getElementById('address'),
+      notes: document.getElementById('notes')
+    };
+
+    // دالة للتحقق من صحة الاسم
+    function validateName(input) {
+      return /^[\u0600-\u06FF\s\p{L}]+$/u.test(input.value);
+    }
+
+    // دالة للتحقق من صحة رقم الهاتف
+    function validatePhone(input) {
+      return /^01[0-9]{9}$/.test(input.value);
+    }
+
+    // إضافة مستمعي أحداث للضغط على Enter
+    Object.keys(formFields).forEach((fieldName, index, array) => {
+      const field = formFields[fieldName];
+      field.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          
+          // التحقق من صحة البيانات قبل الانتقال
+          if (fieldName === 'name' && !validateName(this)) {
+            showError("الرجاء إدخال اسم صحيح");
+            return;
+          }
+          if (fieldName === 'phone' && !validatePhone(this)) {
+            showError("الرجاء إدخال رقم هاتف صحيح");
+            return;
+          }
+
+          // الانتقال للحقل التالي
+          const nextIndex = index + 1;
+          if (nextIndex < array.length) {
+            formFields[array[nextIndex]].focus();
+          } else {
+            document.getElementById('paymentToggle').focus();
+          }
+        }
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initPaymentMethods();
+      displayCartItems();
+      
+      // التحقق من وجود علامة إفراغ النموذج
+      if (localStorage.getItem('should_reset_form') === 'true') {
+        const form = document.getElementById('checkout-form');
+        if (form) {
+          form.reset();
+          // إعادة تعيين طريقة الدفع للحالة الافتراضية
+          const defaultMethod = 'wallet';
+          document.getElementById('paymentMethodInput').value = defaultMethod;
+          document.getElementById('selectedMethodText').textContent = getPaymentMethodText(defaultMethod);
+        }
+        // إزالة العلامة بعد إفراغ النموذج
+        localStorage.removeItem('should_reset_form');
+      }
+    });
+
+    function displayCartItems() {
+      const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+      const container = document.getElementById('product-summary');
+      
+      if (!container) {
+        console.error("Element with id 'product-summary' not found.");
+        return;
+      }
+
+      if (cartItems.length === 0) {
+        container.innerHTML = "<p class='empty-cart'>السلة فارغة.</p>";
+        const submitBtn = document.getElementById('submit-btn');
+        if (submitBtn) submitBtn.disabled = true;
+        return;
+      }
+
+      let html = `
+        <div class="product-row header" role="row">
+          <span class="product-label" role="columnheader">رقم المنتج</span>
+          <span class="product-label" role="columnheader">المنتج</span>
+          <span class="product-label" role="columnheader">السعر</span>
+          <span class="product-label" role="columnheader">الكمية</span>
+          <span class="product-label" role="columnheader">المجموع</span>
+        </div>`;
+      
+      let total = 0;
+      
+      cartItems.forEach((item) => {
+        try {
+          if (!item.id || !item.name || !item.price || !item.quantity) {
+            throw new Error("بيانات المنتج غير مكتملة");
+          }
+          
+          const itemTotal = item.price * item.quantity;
+          total += itemTotal;
+          
+          html += `
+            <div class="product-item" role="row">
+              <div class="product-row">
+                <span class="product-value" role="cell">${item.id}</span>
+                <span class="product-value" role="cell">${item.name}</span>
+                <span class="product-value" role="cell">${item.price.toLocaleString('ar-EG')} ج.م</span>
+                <span class="product-value" role="cell">${item.quantity}</span>
+                <span class="product-value" role="cell">${itemTotal.toLocaleString('ar-EG')} ج.م</span>
+              </div>
+            </div>`;
+        } catch (error) {
+          console.error('Error processing cart item:', error);
+          showError("خطأ في بيانات المنتج. يرجى تحديث الصفحة أو إفراغ السلة");
+          return;
+        }
+      });
+      
+      html += `
+        <div class="total-section">
+          <span>المجموع الكلي:</span>
+          <strong aria-label="المجموع الكلي ${total.toLocaleString('ar-EG')} جنيه مصري">
+            ${total.toLocaleString('ar-EG')} ج.م
+          </strong>
+        </div>`;
+      
+      container.innerHTML = html;
+    }
+
+    function initPaymentMethods() {
+      try {
+        const paymentToggle = document.getElementById('paymentToggle');
+        const paymentOptions = document.getElementById('paymentOptions');
+        const selectedDisplay = document.getElementById('selectedPaymentDisplay');
+        const paymentMethodInput = document.getElementById('paymentMethodInput');
+        const selectedMethodText = document.getElementById('selectedMethodText');
+        
+        if (!paymentToggle || !paymentOptions || !selectedDisplay ||
+            !paymentMethodInput || !selectedMethodText) {
+          throw new Error("عناصر طرق الدفع غير موجودة");
+        }
+        
+        paymentToggle.addEventListener('click', function() {
+          const isExpanded = this.getAttribute('aria-expanded') === 'true';
+          this.setAttribute('aria-expanded', !isExpanded);
+          this.classList.toggle('active');
+          paymentOptions.classList.toggle('active');
+        });
+        
+        selectedDisplay.classList.add('active');
+        
+        const defaultMethod = 'wallet';
+        paymentMethodInput.value = defaultMethod;
+        selectedMethodText.textContent = getPaymentMethodText(defaultMethod);
+      } catch (error) {
+        console.error('Payment methods initialization error:', error);
+        showError("خطأ في تهيئة طرق الدفع. يرجى تحديث الصفحة");
+      }
+    }
+    
+    function togglePaymentOptions() {
+      const paymentToggle = document.getElementById('paymentToggle');
+      const paymentOptions = document.getElementById('paymentOptions');
+      const isExpanded = paymentToggle.getAttribute('aria-expanded') === 'true';
+      
+      paymentToggle.setAttribute('aria-expanded', !isExpanded);
+      paymentToggle.classList.toggle('active');
+      paymentOptions.classList.toggle('active');
+    }
+    
+    function selectPaymentMethod(element, method) {
+      const options = document.querySelectorAll('.payment-option');
+      options.forEach(option => {
+        option.classList.remove('selected');
+        option.setAttribute('aria-selected', 'false');
+      });
+      
+      element.classList.add('selected');
+      element.setAttribute('aria-selected', 'true');
+      
+      const methodText = getPaymentMethodText(method);
+      document.getElementById('selectedMethodText').textContent = methodText;
+      document.getElementById('paymentMethodInput').value = method;
+      
+      document.getElementById('paymentToggle').setAttribute('aria-expanded', 'false');
+      document.getElementById('paymentToggle').classList.remove('active');
+      document.getElementById('paymentOptions').classList.remove('active');
+    }
+    
+    function getPaymentMethodText(method) {
+      const methods = {
+        'wallet': 'المحافظ الإلكترونية',
+        'visa': 'بطاقة فيزا / ماستركارد',
+        'cash': 'الدفع عند الاستلام'
+      };
+      return methods[method] || method;
+    }
+
+    const form = document.getElementById('checkout-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const loadingMessage = document.getElementById('loading-message');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      hideError();
+      
+      try {
+        // التحقق من وجود منتجات في السلة
+        const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+        if (cartItems.length === 0) {
+          showError("السلة فارغة، لا يمكن إتمام الشراء");
+          return;
+        }
+        
+        // التحقق من اختيار طريقة الدفع
+        const paymentMethod = document.getElementById('paymentMethodInput').value;
+        if (!paymentMethod) {
+          showError("يرجى اختيار وسيلة الدفع");
+          return;
+        }
+
+        // التحقق من ملء جميع البيانات المطلوبة
+        const name = form.querySelector('[name="name"]').value.trim();
+        const phone = form.querySelector('[name="phone"]').value.trim();
+        const address = form.querySelector('[name="address"]').value.trim();
+        const notes = form.querySelector('[name="notes"]')?.value.trim() || "لا يوجد";
+
+        if (!name || !phone || !address) {
+          showError("يرجى ملء جميع البيانات المطلوبة");
+          return;
+        }
+
+        // التحقق من صحة رقم الهاتف
+        if (!/^01[0-9]{9}$/.test(phone)) {
+          showError("يرجى إدخال رقم هاتف صحيح (مثال: 01012345678)");
+          return;
+        }
+        
+        if (submitBtn.disabled) return;
+        
+        submitBtn.disabled = true;
+        loadingMessage.style.display = 'block';
+
+        // تجهيز بيانات الطلب
+        const cartData = JSON.parse(localStorage.getItem("cart") || "[]");
+        const orderNumber = Math.floor(Math.random() * 90000) + 10000;
+        const totalAmount = cartData.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const timestamp = new Date().toLocaleString('ar-EG');
+
+        // تجهيز البيانات للإرسال
+        const orderData = {
+          order_number: orderNumber.toString(),
+          name: name,
+          phone: phone,
+          address: address,
+          payment_method: paymentMethod,
+          notes: notes,
+          products: cartData.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity
+          })),
+          total_amount: totalAmount,
+          timestamp: timestamp
+        };
+
+        // إرسال البيانات للسيرفر بالهيكل المطلوب
+        const serverData = {
+          action: 'checkAndUpdateQuantity',
+          contents: {
+            order: {
+              number: orderNumber.toString(),
+              customer: {
+                name,
+                phone,
+                address,
+                notes
+              },
+              payment_method: paymentMethod,
+              products: cartData.map(item => ({
+                id: item.id,
+                quantity: item.quantity
+              })),
+              total_amount: totalAmount
+            }
+          }
+        };
+
+        const formData = new URLSearchParams();
+        formData.append('data', JSON.stringify(serverData));
+
+        // تخزين البيانات فقط دون إرسالها للسيرفر
+        // تخزين بيانات الطلب محلياً
+        const checkoutData = {
+          ...orderData,
+          order_number: orderNumber
+        };
+        
+        localStorage.setItem('checkout_data', JSON.stringify(checkoutData));
+        localStorage.setItem('order_number', orderNumber);
+
+        // توجيه المستخدم حسب طريقة الدفع
+        if (paymentMethod === "wallet") {
+          window.location.href = "../wallet/wallet.html";
+        } else if (paymentMethod === "visa") {
+          window.location.href = "../visa/visa.html";
+        } else {
+          window.location.href = "../thank/thankyou.html";
+        }
+
+      } catch (error) {
+        console.error("Error:", error);
+        showError(error.message || "حدث خطأ في الاتصال بالخادم");
+        submitBtn.disabled = false;
+        loadingMessage.style.display = 'none';
+      }
+    });
+
+    function showError(message) {
+      try {
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        
+        if (!errorMessage || !errorText) {
+          console.error('Error message elements not found');
+          return;
+        }
+        
+        errorText.textContent = message;
+        errorMessage.style.display = 'flex';
+        setTimeout(() => {
+          errorMessage.classList.add('show');
+        }, 100);
+      } catch (error) {
+        console.error('Error displaying error message:', error);
+      }
+    }
+
+    function hideError() {
+      try {
+        const errorMessage = document.getElementById('error-message');
+        
+        if (!errorMessage) {
+          console.error('Error message element not found');
+          return;
+        }
+        
+        errorMessage.classList.remove('show');
+        // زيادة وقت ظهور رسالة الخطأ إلى 3 ثواني
+        setTimeout(() => {
+          errorMessage.style.display = 'none';
+        }, 3000);
+      } catch (error) {
+        console.error('Error hiding error message:', error);
+      }
+    }
+  </script>
+</body>
+</html>
