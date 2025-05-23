@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         localStorage.setItem('cart', JSON.stringify(cart));
-        window.location.href = '/check/checkout.html';
+        window.location.href = 'check/checkout.html';
     });
 
     document.getElementById('prevPage').addEventListener('click', () => {
